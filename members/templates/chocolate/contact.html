@@ -1,5 +1,5 @@
 {% extends 'master.html' %}
-
+{% load static %}
 
 {% block title %}
 To-Let | Contact
@@ -9,9 +9,36 @@ To-Let | Contact
 {% block content %}
 <section id="contact" class="py-5 mt-5">
     <div class="container">
-        <div class="row">
-            <div class="col-8">
-                <h1 class="display-4">Get In Touch</h1>
+        <div class="row align-items-center">
+            <h1 class="display-4 mb-3">Get In Touch</h1>
+            <div class="col-6">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="text" class="form-control" name="name" placeholder="Name" aria-label="Name">
+                        </div>
+                        <div class="col">
+                            <input type="email" class="form-control" name="email" placeholder="E-mail address"
+                                aria-label="E-mail address">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="text" class="form-control" name="phone" placeholder="Phone" aria-label="Phone">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="subject" placeholder="Subject" aria-label="Subject">
+                        </div>
+                    </div>
+                    <textarea name="message" id="id_message" class="form-control mb-3" cols="30" rows="10"
+                        placeholder="Write your message here ..."></textarea>
+
+                        <button type="submit" class="btn btn-info"><i class="fa-solid fa-paper-plane me-2"></i>Send</button>
+                </form>
+            </div>
+            <div class="col-6">
+                <img src="{% static 'images/contact.jpg' %}" class="img-fluid" alt="Contact">
             </div>
         </div>
     </div>
