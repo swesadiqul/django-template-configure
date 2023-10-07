@@ -13,7 +13,43 @@ To-Let | Home
         <div class="row">
             <div class="col-8">
                 <h1 class="display-4">Welcome to Chocolate Motin!</h1>
-                <img src="{% static 'images/5.jpg' %}" alt="Image">
+                <!-- <img src="{% static 'images/5.jpg' %}" alt="Image"> -->
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for x in student %}
+                        <tr>
+                            <th scope="row">{{ x.id }}</th>
+                            <td>{{ x.name }}</td>
+                            <td>{{ x.email }}</td>
+                            <td>{{ x.phone }}</td>
+                            <td>{{ x.subject }}</td>
+                            <td>{{ x.message }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+                
+<!--                 
+                {% comment %}
+                    {% for x in  %}{% endfor %}
+                {% endcomment %} -->
+                    
+                    
+
             </div>
         </div>
     </div>

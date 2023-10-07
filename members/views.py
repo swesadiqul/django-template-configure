@@ -5,7 +5,8 @@ from .models import Contact
 
 
 def home(request):
-    return render(request, 'index.html')
+    contact_list = Contact.objects.all()
+    return render(request, 'index.html', {'student': contact_list})
 
 
 def about(request):
