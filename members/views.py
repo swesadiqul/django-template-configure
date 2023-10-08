@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse
-from .models import Contact
+from .models import Contact, Service
 
 # Create your views here.
 
@@ -33,4 +33,6 @@ def feedback(request):
 
 
 def services(request):
-    return render(request, 'chocolate/services.html')
+    services = Service.objects.all()
+    print(services)
+    return render(request, 'chocolate/services.html', {'services': services})

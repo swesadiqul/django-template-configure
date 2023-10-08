@@ -12,6 +12,20 @@ To-Let | Services
         <div class="row">
             <div class="col-8">
                 <h1 class="display-4">Let's take our services</h1>
+                
+                {% for x in services %}
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ x.id }}</h5>
+                        <img src="{{ x.icon.url }}" alt="Service">
+                        <h5 class="card-title">{{ x.title }}</h5>
+                        <p class="card-text">{{ x.content }}</p>
+                    </div>
+                  </div>
+                {% empty %}
+                    <h5>No services available right now.</h5>
+                {% endfor %}
+                    
             </div>
         </div>
     </div>
