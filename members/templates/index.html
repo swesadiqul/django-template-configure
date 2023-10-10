@@ -44,4 +44,57 @@ To-Let | Home
         </div>
     </div>
 </section>
+
+
+
+
+
+{% comment %}
+{% for x in nums %}
+<p>{{ x.id }}</p>
+<p>{{ x.firstname }}</p>
+<p>{{ x.lastname }}</p>
+<p>{{ x.phone }}</p>
+<p>{{ x.joined_date }}</p>
+
+{% empty %}
+<p>No data available.</p>
+{% endfor %}
+{% endcomment %}
+
+
+
+
+{% comment %}
+{% with nums.0 as x %}
+<p>{{ x.id }}</p>
+<p>{{ x.firstname }}</p>
+<p>{{ x.lastname }}</p>
+<p>{{ x.phone }}</p>
+<p>{{ x.joined_date }}</p>
+{% endwith %}
+{% endcomment %}
+
+
+
+
+
+
+
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-11 col-md-6 col-lg-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="{% static 'images/5.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">{{ content|slice:":120" }} ...</p>
+                        <a href="/single-blog/" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
