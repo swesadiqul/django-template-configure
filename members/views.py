@@ -1,9 +1,11 @@
 from django.shortcuts import render, HttpResponse
 from .models import Contact, Service
 import datetime
+from .forms import *
 
 # Create your views here.
 content = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi quo incidunt dicta magni nobis. Voluptate sunt architecto minus iusto eveniet sit doloremque ducimus, voluptatem laudantium deserunt quia quibusdam, officia nulla in. Distinctio, eveniet. Sequi vel omnis, animi quam quibusdam ipsa debitis? Voluptatibus consequatur ipsum libero possimus neque quaerat qui nulla."
+
 
 def home(request):
     contact_list = Contact.objects.all()
@@ -47,23 +49,35 @@ def home(request):
     return render(request, 'index.html', {'student': contact_list, 'content': content, 'nums': nums})
 
 
+student = {
+    "name": "Sadiqul islam",
+}
+
+
+print(student.get('name'))
+
+
 def about(request):
     return render(request, 'chocolate/about.html')
 
 
 def contact(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
+        forms = ContactForm()
+        # name = request.POST.get('name')
+        # email = request.POST.get('email')
+        # phone = request.POST.get('phone')
+        # subject = request.POST.get('subject')
+        # message = request.POST.get('message')
 
-        ##save contact information
-        contact = Contact(name=name, email=email, phone=phone, subject=subject, message=message)
-        contact.save()
+        # # save contact information
+        # # contact = Contact(name=name, email=email, phone=phone, subject=subject, message=message)
+        # # contact.save()
 
-    return render(request, 'chocolate/contact.html')
+        # Contact.objects.create(name=name, email=email,
+        #                        phone=phone, subject=subject, message=message)
+
+    return render(request, 'chocolate/contact.html', {'forms': forms})
 
 
 def feedback(request):
