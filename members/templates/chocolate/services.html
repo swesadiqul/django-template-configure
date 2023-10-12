@@ -17,7 +17,13 @@ To-Let | Services
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">{{ x.id }}</h5>
-                        <img src="{{ x.icon.url }}" alt="Service">
+                        
+                        {% if x.icon %}
+                            <img src="{{ x.icon.url }}" alt="Service">
+                        {% else %}
+                            None
+                        {% endif %}
+                
                         <h5 class="card-title">{{ x.title }}</h5>
                         <p class="card-text">{{ x.content }}</p>
                     </div>

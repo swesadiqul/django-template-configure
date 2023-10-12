@@ -49,12 +49,18 @@ def home(request):
     return render(request, 'index.html', {'student': contact_list, 'content': content, 'nums': nums})
 
 
-student = {
-    "name": "Sadiqul islam",
-}
+student = [
+    {
+        "name": "Sadiqul islam",
+        'roll': 34
+    },
+    {
+        "name": "Sadiqul islam",
+    },
+]
 
 
-print(student.get('name'))
+print(student[0]['roll'])
 
 
 def about(request):
@@ -63,21 +69,20 @@ def about(request):
 
 def contact(request):
     if request.method == 'POST':
-        forms = ContactForm()
-        # name = request.POST.get('name')
-        # email = request.POST.get('email')
-        # phone = request.POST.get('phone')
-        # subject = request.POST.get('subject')
-        # message = request.POST.get('message')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
 
-        # # save contact information
-        # # contact = Contact(name=name, email=email, phone=phone, subject=subject, message=message)
-        # # contact.save()
+        # save contact information
+        contact = Contact(name=name, email=email, phone=phone, subject=subject, message=message)
+        contact.save()
 
         # Contact.objects.create(name=name, email=email,
         #                        phone=phone, subject=subject, message=message)
 
-    return render(request, 'chocolate/contact.html', {'forms': forms})
+    return render(request, 'chocolate/contact.html')
 
 
 def feedback(request):
@@ -87,6 +92,8 @@ def feedback(request):
 def services(request):
     services = Service.objects.all()
     print(services)
+    print(services[0].created_at)
+    print(services[0].updated_at)
     return render(request, 'chocolate/services.html', {'services': services})
 
 

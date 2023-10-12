@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.utils import timezone
 
 # Create your models here.
 class Contact(models.Model):
@@ -17,7 +18,7 @@ class Contact(models.Model):
 class Service(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # other fields
-    title = models.CharField(max_length=120)
+    title = models.CharField(max_length=120, unique=True)
     icon = models.ImageField(upload_to="services")
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
