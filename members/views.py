@@ -1,66 +1,16 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect
 from .models import Contact, Service
-import datetime
 from .forms import *
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 # Create your views here.
-content = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi quo incidunt dicta magni nobis. Voluptate sunt architecto minus iusto eveniet sit doloremque ducimus, voluptatem laudantium deserunt quia quibusdam, officia nulla in. Distinctio, eveniet. Sequi vel omnis, animi quam quibusdam ipsa debitis? Voluptatibus consequatur ipsum libero possimus neque quaerat qui nulla."
-
-
 def home(request):
     contact_list = Contact.objects.all()
-    nums = [
-        {
-            'id': 1,
-            'firstname': 'Emil',
-            'lastname': 'Refsnes',
-            'phone': 5551234,
-            'joined_date': datetime.date(2022, 1, 5)
-        },
-        {
-            'id': 2,
-            'firstname': 'Tobias',
-            'lastname': 'Refsnes',
-            'phone': 5557777,
-            'joined_date': datetime.date(2021, 4, 1)
-        },
-        {
-            'id': 3,
-            'firstname': 'Linus',
-            'lastname': 'Refsnes',
-            'phone': 5554321,
-            'joined_date': datetime.date(2021, 12, 24)
-        },
-        {
-            'id': 4,
-            'firstname': 'Lene',
-            'lastname': 'Refsnes',
-            'phone': 5551234,
-            'joined_date': datetime.date(2021, 5, 1)
-        },
-        {
-            'id': 5,
-            'firstname': 'Stalikken',
-            'lastname': 'Refsnes',
-            'phone': 5559876,
-            'joined_date': datetime.date(2022, 9, 29)
-        }
-    ]
-    return render(request, 'index.html', {'student': contact_list, 'content': content, 'nums': nums})
-
-
-student = [
-    {
-        "name": "Sadiqul islam",
-        'roll': 34
-    },
-    {
-        "name": "Sadiqul islam",
-    },
-]
-
-
-print(student[0]['roll'])
+    return render(request, 'index.html', {'student': contact_list})
 
 
 def about(request):
@@ -69,18 +19,21 @@ def about(request):
 
 def contact(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            Contact.objects.create(name=name, email=email,
+                                   phone=phone, subject=subject, message=message)
+            messages.success(request, 'Successfully submitted!')
+            return redirect('contact')
 
-        # save contact information
-        contact = Contact(name=name, email=email, phone=phone, subject=subject, message=message)
-        contact.save()
-
-        # Contact.objects.create(name=name, email=email,
-        #                        phone=phone, subject=subject, message=message)
+        else:
+            messages.error(request, 'Invalid data.')
+            return redirect('contact')
 
     return render(request, 'chocolate/contact.html')
 
@@ -91,9 +44,6 @@ def feedback(request):
 
 def services(request):
     services = Service.objects.all()
-    print(services)
-    print(services[0].created_at)
-    print(services[0].updated_at)
     return render(request, 'chocolate/services.html', {'services': services})
 
 
@@ -102,4 +52,58 @@ def blogs(request):
 
 
 def single_blog(request):
-    return render(request, 'chocolate/single-blog.html', {'content': content})
+    return render(request, 'chocolate/single-blog.html')
+
+
+def sign_up(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        username = request.POST.get('username')
+        if not get_user_model().objects.filter(username=username).exists():
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.username = username.lower()
+                user.save()
+                login(request, user)
+                messages.success(request, 'You have singed up successfully.')
+                return redirect('home')
+
+            else:
+                messages.error(request, "Invalid form data.")
+                return render(request, 'chocolate/signup.html')
+        else:
+            messages.error(request, "You have already an account.")
+            return render(request, 'chocolate/signup.html')
+    else:
+        return render(request, 'chocolate/signup.html')
+
+
+def log_in(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'You have successfully logged in.')
+                return redirect('home')
+            else:
+                messages.error(request, "You don't have any account.")
+                return redirect('signup')
+        else:
+            messages.error(request, 'Invalid username or password.')
+            return render(request, 'chocolate/login.html')
+    return render(request, 'chocolate/login.html')
+
+
+def change_password(request):
+    form = PasswordChangeForm(user=request.user)
+    return render(request, 'chocolate/change_password.html', {'form': form})
+
+
+def log_out(request):
+    logout(request)
+    messages.success(request, "User successfully logout.")
+    return redirect('home')

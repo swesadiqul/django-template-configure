@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="/">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -26,10 +26,30 @@
                     <a class="nav-link" href="{% url 'feedback' %}">Feedback</a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            <div class="user">
+                {% if not request.user.is_authenticated %}
+                <a class="btn btn-success px-4" href="/login/">Login</a>
+                <a class="btn btn-outline-primary ms-2 px-3" href="/signup/">Signup</a>
+                {% else %}
+                <div class="btn-group">
+                    <button type="button" class="btn border-0" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="row align-items-center">
+                            <div class="col text-end px-0">
+                                <p class="mb-0">{{ request.user.username }}</p>
+                            </div>
+                            <div class="col">
+                                <i class="fa-solid fa-circle-user fs-3"></i>
+                            </div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="/change-password/">Change Password</a></li>
+                        <li><a class="dropdown-item" href="/logout/">Logout</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </nav>

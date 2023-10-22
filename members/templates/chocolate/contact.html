@@ -12,7 +12,14 @@ To-Let | Contact
     <div class="container">
         <div class="row align-items-center">
             <h1 class="display-4 mb-3">Get In Touch</h1>
-            <div class="col-6">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="alert {{ message.tags }}" role="alert" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class=" col-6">
                 <form action="" method="post">
                     {% csrf_token %}
                     <div class="row mb-3">
